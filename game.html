@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Отдельная страница мини-игры в портфолио." data-i18n-content="gameMetaDescription" />
+    <title data-i18n="gamePageTitle">Миниигра — портфолио</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body class="game-page">
+    <main class="game-page__main">
+      <div class="game-page__top">
+        <a class="game-page__back" href="index.html" data-i18n="gameBack">← Вернуться в портфолио</a>
+        <div class="language-switcher" role="group" aria-label="Выбор языка" data-i18n-aria="languageGroup">
+          <button class="language-switcher__button is-selected" type="button" data-language="ru" aria-pressed="true" aria-label="Русский">RU</button>
+          <button class="language-switcher__button" type="button" data-language="en" aria-pressed="false" aria-label="English">ENG</button>
+          <button class="language-switcher__button" type="button" data-language="et" aria-pressed="false" aria-label="Eesti">EST</button>
+        </div>
+      </div>
+      <div class="game-page__content">
+        <span class="game-page__index" data-i18n="gameIndex">ВНЕ ПРОГРАММЫ / 001</span>
+        <div class="game-page__question" aria-hidden="true">?</div>
+        <p class="eyebrow" data-i18n="gameEyebrow">Пауза для несерьёзных дел</p>
+        <h1><span data-i18n="gameTitle">Миниигра</span><span class="accent">.</span></h1>
+        <p class="game-page__description" data-i18n="gameDescription">
+          Игровая механика пока за кулисами. Скоро здесь появится ваша идея —
+          а пока можно вернуться к просмотру работ.
+        </p>
+        <span class="game-page__status"><span class="status-dot"></span> <span data-i18n="gameStatus">ПРАВИЛА СОЧИНЯЮТСЯ</span></span>
+      </div>
+      <span class="game-page__footer" data-i18n="gameFooter">УДАЧИ. ОНА МОЖЕТ ПОНАДОБИТЬСЯ.</span>
+    </main>
+  </body>
+</html>
