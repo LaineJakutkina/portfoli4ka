@@ -1,0 +1,29 @@
+{
+  "lead": {
+    "ru": "Привет. Я Лаине — человек, который предпочитает показывать, а не обещать.",
+    "en": "Hi, I'm Laine — I'd rather show what I can do than promise the moon.",
+    "et": "Tere! Mina olen Laine — eelistan lubaduste asemel oma oskusi näidata."
+  },
+  "description": {
+    "ru": "Здесь будет история о том, чем я занимаюсь, что мне интересно и почему со мной приятно работать. Без фразы «стрессоустойчивый командный игрок» — если только однажды это не станет действительно важным сюжетом, п.с. я не очень стрессоустойчива.",
+    "en": "This is where I'll tell you what I do, what I'm curious about and why I'm good to work with. No “resilient team player” line unless it becomes relevant to the plot (P.S. I'm not particularly stress-resistant).",
+    "et": "Siin räägin, millega tegelen, mis mind huvitab ja miks minuga on hea koos töötada. Ei mingit „pingetaluvat meeskonnamängijat” — kui see just loo jaoks oluliseks ei muutu."
+  },
+  "traits": [
+    {
+      "ru": "Любопытство включено",
+      "en": "Curiosity — switched on",
+      "et": "Uudishimu — sisse lülitatud"
+    },
+    {
+      "ru": "Юмор в комплекте",
+      "en": "Humour — included",
+      "et": "Huumor — kaasas"
+    },
+    {
+      "ru": "Вымышленные регалии отсутствуют",
+      "en": "Made-up credentials — not included",
+      "et": "Väljamõeldud tiitlid — puuduvad"
+    }
+  ]
+}
