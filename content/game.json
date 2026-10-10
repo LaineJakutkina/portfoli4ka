@@ -1,0 +1,22 @@
+{
+  "eyebrow": {
+    "ru": "Пауза для несерьёзных дел",
+    "en": "A little break from being serious",
+    "et": "Väike paus tõsistest asjadest"
+  },
+  "title": {
+    "ru": "Миниигра",
+    "en": "Mini-game",
+    "et": "Minimäng"
+  },
+  "description": {
+    "ru": "Игровая механика пока за кулисами. Скоро здесь появится ваша идея — а пока можно вернуться к просмотру работ.",
+    "en": "The game mechanics are still backstage. Your idea will take the spotlight here soon—in the meantime, feel free to browse the work.",
+    "et": "Mängumehaanika on veel lava taga. Peagi jõuab siia sinu idee — seni võid töödega tutvuda."
+  },
+  "status": {
+    "ru": "ПРАВИЛА СОЧИНЯЮТСЯ",
+    "en": "RULES ARE BEING MADE UP",
+    "et": "REEGLID ON LOOMISEL"
+  }
+}
