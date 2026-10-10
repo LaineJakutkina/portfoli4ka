@@ -6,7 +6,7 @@
     <meta
       name="description"
       content="Портфолио для работодателей и учебных заведений. Серьёзные намерения, несерьёзная подача."
-    data-i18n-content="metaDescription"
+      data-i18n-content="metaDescription"
     />
     <title data-i18n="pageTitle">Портфолио — премьера скоро</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -69,31 +69,8 @@
           <p class="eyebrow" data-i18n="illEyebrow">Цвет, форма и иногда здравый смысл</p>
           <h2 id="illustration-title" data-i18n-html="illTitle">Иллюстрация<br />и графика<span class="accent">.</span></h2>
         </div>
-        <div class="project-grid">
-          <article class="project-card project-card--feature">
-            <div class="project-card__visual visual-poster">
-              <span class="visual-poster__stamp" data-i18n="illStamp">ИЛЛЮСТРАЦИЯ</span>
-              <span class="visual-poster__title" data-i18n-html="illPoster">ОБРАЗ<br />С ХАРАКТЕРОМ</span>
-              <span class="visual-poster__caption" data-i18n="illCaption">здесь будет ваша работа</span>
-            </div>
-            <div class="project-card__details">
-              <div><span class="card-index" data-i18n="illCardIndex">ИЛЛЮСТРАЦИЯ 01</span><h3 data-i18n="illCardTitle">Первая работа</h3></div>
-              <p data-i18n="illCardDescription">Добавим название, технику и историю создания.</p>
-            </div>
-          </article>
-          <article class="project-card">
-            <div class="project-card__visual visual-note">
-              <span class="visual-note__asterisk">*</span>
-              <span class="visual-note__text" data-i18n-html="graphicPoster">графика<br />с идеей</span>
-              <span class="visual-note__footnote" data-i18n="graphicCaption">не просто красиво — ещё и зачем-то</span>
-            </div>
-            <div class="project-card__details">
-              <div><span class="card-index" data-i18n="graphicCardIndex">ГРАФИКА 02</span><h3 data-i18n="graphicCardTitle">Вторая работа</h3></div>
-              <p data-i18n="graphicCardDescription">Постер, обложка, персонаж или что-то совсем своё.</p>
-            </div>
-          </article>
-        </div>
-        <p class="section-aside" data-i18n="illAside">* Пока это выставочные стенды. Скоро появятся настоящие работы.</p>
+        <div class="project-grid" id="illustration-work-list" aria-live="polite"></div>
+        <p class="section-aside" data-i18n="illAside">* Добавляйте работы через редактор портфолио — код не понадобится.</p>
       </section>
 
       <section class="content-section projects-section" id="projects" aria-labelledby="projects-title">
@@ -102,23 +79,7 @@
           <p class="eyebrow" data-i18n="projectsEyebrow">От первой идеи до «а оно работает!»</p>
           <h2 id="projects-title"><span data-i18n="projectsTitle">Проекты</span><span class="accent">.</span></h2>
         </div>
-        <div class="project-list">
-          <article class="project-row">
-            <span class="card-index">01</span>
-            <div><h3 data-i18n="projectOneTitle">Проект появится здесь</h3><p data-i18n="projectOneDescription">Коротко расскажем, что это, для кого и какую задачу решает.</p></div>
-            <span class="project-row__type" data-i18n="projectOneStatus">В ПРОЦЕССЕ</span>
-          </article>
-          <article class="project-row">
-            <span class="card-index">02</span>
-            <div><h3 data-i18n="projectTwoTitle">Идея с шансом на жизнь</h3><p data-i18n="projectTwoDescription">Учебные, личные и командные проекты — с честным описанием вклада.</p></div>
-            <span class="project-row__type" data-i18n="projectTwoStatus">СКОРО</span>
-          </article>
-          <article class="project-row">
-            <span class="card-index">03</span>
-            <div><h3 data-i18n="projectThreeTitle">Место для эксперимента</h3><p data-i18n="projectThreeDescription">Потому что не всякая хорошая идея сначала выглядит разумно.</p></div>
-            <span class="project-row__type" data-i18n="projectThreeStatus">В РАЗРАБОТКЕ</span>
-          </article>
-        </div>
+        <div class="project-list" id="project-list" aria-live="polite"></div>
       </section>
 
       <section class="content-section media-section" id="media" aria-labelledby="media-title">
@@ -127,20 +88,7 @@
           <p class="eyebrow" data-i18n="mediaEyebrow">То, что движется, звучит или выходит в свет</p>
           <h2 id="media-title"><span data-i18n="mediaTitle">Медиа</span><span class="accent">.</span></h2>
         </div>
-        <div class="media-grid">
-          <article class="media-card media-card--wide">
-            <span class="media-card__label" data-i18n="mediaVideoLabel">ФОРМАТ 01 / ВИДЕО</span>
-            <span class="media-card__play" aria-hidden="true">▶</span>
-            <h3 data-i18n="mediaVideoTitle">Здесь будет видео</h3>
-            <p data-i18n="mediaVideoDescription">Ролик, анимация или доказательство, что статичные картинки — не единственный талант.</p>
-          </article>
-          <article class="media-card">
-            <span class="media-card__label" data-i18n="mediaOtherLabel">ФОРМАТ 02 / ДРУГОЕ</span>
-            <span class="media-card__wave" aria-hidden="true">〰</span>
-            <h3 data-i18n="mediaOtherTitle">И другие медиа</h3>
-            <p data-i18n="mediaOtherDescription">Подкасты, публикации, выступления и прочие выходы к публике.</p>
-          </article>
-        </div>
+        <div class="media-grid" id="media-list" aria-live="polite"></div>
       </section>
 
       <section class="content-section about-section" id="about" aria-labelledby="about-title">
@@ -151,19 +99,9 @@
             <h2 id="about-title"><span data-i18n="aboutTitle">Обо мне</span><span class="accent">.</span></h2>
           </div>
           <div class="about-copy">
-            <p class="about-lead" data-i18n-html="aboutLead">
-              Привет. Я <span class="text-highlight">Лаине</span> — человек, который предпочитает
-              показывать, а не обещать.
-            </p>
-            <p data-i18n="aboutDescription">
-              Здесь будет история о том, чем я занимаюсь, что мне интересно и почему со мной
-              приятно работать. Без фразы «стрессоустойчивый командный игрок» — если только
-              однажды это не станет действительно важным сюжетом, п.с. я не очень стрессоустойчива.
-            </p>
-            <div class="trait-list" aria-label="Мои принципы">
-              <span data-i18n="traitCuriosity">Любопытство включено</span>
-              <span data-i18n="traitHumor">Юмор в комплекте</span>
-              <span data-i18n="traitHonesty">Вымышленные регалии отсутствуют</span>
+            <p class="about-lead" id="about-lead"></p>
+            <p id="about-description"></p>
+            <div class="trait-list" id="about-traits" aria-label="Мои принципы" data-i18n-aria="traitListAria">
             </div>
           </div>
         </div>

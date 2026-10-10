@@ -37,7 +37,7 @@ const translations = {
     graphicCardIndex: "ГРАФИКА 02",
     graphicCardTitle: "Вторая работа",
     graphicCardDescription: "Постер, обложка, персонаж или что-то совсем своё.",
-    illAside: "* Пока это выставочные стенды. Скоро появятся настоящие работы.",
+    illAside: "* Добавляйте работы через редактор портфолио — код не понадобится.",
     projectsKickerLeft: "02 / СДЕЛАНО ИЛИ ЗАДУМАНО",
     projectsKickerRight: "ПРОЕКТЫ",
     projectsEyebrow: "От первой идеи до «а оно работает!»",
@@ -81,6 +81,14 @@ const translations = {
     gameDescription: "Игровая механика пока за кулисами. Скоро здесь появится ваша идея — а пока можно вернуться к просмотру работ.",
     gameStatus: "ПРАВИЛА СОЧИНЯЮТСЯ",
     gameFooter: "УДАЧИ. ОНА МОЖЕТ ПОНАДОБИТЬСЯ.",
+    emptyIllustrations: "Здесь пока пусто — добавьте иллюстрацию или графическую работу в редакторе портфолио.",
+    emptyProjects: "Пока нет проектов. Добавьте первый через редактор портфолио.",
+    emptyMedia: "Медиа появятся здесь, когда вы добавите их в редакторе портфолио.",
+    openWork: "Открыть материал ↗",
+    contentLoadError: "Не удалось загрузить материалы портфолио. Проверьте подключение и попробуйте обновить страницу.",
+    categoryIllustration: "ИЛЛЮСТРАЦИЯ",
+    categoryGraphic: "ГРАФИКА",
+    categoryMedia: "МЕДИА",
   },
   en: {
     metaDescription: "A portfolio for employers and schools. Serious intentions, not-so-serious presentation.",
@@ -116,7 +124,7 @@ const translations = {
     graphicCardIndex: "GRAPHICS 02",
     graphicCardTitle: "Another piece",
     graphicCardDescription: "A poster, cover, character or something entirely your own.",
-    illAside: "* These are placeholders for now. The real work is on its way.",
+    illAside: "* Add your work through the portfolio editor—no code required.",
     projectsKickerLeft: "02 / MADE OR IMAGINED",
     projectsKickerRight: "PROJECTS",
     projectsEyebrow: "From first idea to “hey, it works!”",
@@ -160,6 +168,14 @@ const translations = {
     gameDescription: "The game mechanics are still backstage. Your idea will take the spotlight here soon—in the meantime, feel free to browse the work.",
     gameStatus: "RULES ARE BEING MADE UP",
     gameFooter: "GOOD LUCK. YOU MAY NEED IT.",
+    emptyIllustrations: "Nothing here yet — add an illustration or graphic through the portfolio editor.",
+    emptyProjects: "No projects yet. Add your first one in the portfolio editor.",
+    emptyMedia: "Media will appear here after you add it in the portfolio editor.",
+    openWork: "Open item ↗",
+    contentLoadError: "Could not load portfolio content. Check your connection and refresh the page.",
+    categoryIllustration: "ILLUSTRATION",
+    categoryGraphic: "GRAPHICS",
+    categoryMedia: "MEDIA",
   },
   et: {
     metaDescription: "Portfoolio tööandjatele ja õppeasutustele. Tõsised kavatsused, mänguline esitlus.",
@@ -195,7 +211,7 @@ const translations = {
     graphicCardIndex: "GRAAFIKA 02",
     graphicCardTitle: "Teine töö",
     graphicCardDescription: "Plakat, kaas, tegelane või midagi päris omaloomingulist.",
-    illAside: "* Praegu on need näitusealused. Päris tööd jõuavad siia peagi.",
+    illAside: "* Lisa töid portfoolio redaktoris — koodi pole vaja muuta.",
     projectsKickerLeft: "02 / TEHTUD VÕI KAVANDATUD",
     projectsKickerRight: "PROJEKTID",
     projectsEyebrow: "Esimesest ideest kuni „näe, töötabki!”",
@@ -239,13 +255,246 @@ const translations = {
     gameDescription: "Mängumehaanika on veel lava taga. Peagi jõuab siia sinu idee — seni võid töödega tutvuda.",
     gameStatus: "REEGLID ON LOOMISEL",
     gameFooter: "EDU. SEDA VÕIB TARVIS MINNA.",
+    emptyIllustrations: "Siin pole veel midagi — lisa illustratsioon või graafiline töö portfoolio redaktoris.",
+    emptyProjects: "Projekte veel pole. Lisa esimene portfoolio redaktoris.",
+    emptyMedia: "Meedia ilmub siia pärast selle lisamist portfoolio redaktoris.",
+    openWork: "Ava töö ↗",
+    contentLoadError: "Portfoolio sisu laadimine ebaõnnestus. Kontrolli ühendust ja värskenda lehte.",
+    categoryIllustration: "ILLUSTRATSIOON",
+    categoryGraphic: "GRAAFIKA",
+    categoryMedia: "MEEDIA",
   },
 };
 
 const languageButtons = [...document.querySelectorAll("[data-language]")];
+let currentLanguage = "ru";
+let portfolioContent = null;
+let gameContent = null;
+
+function localized(value) {
+  if (typeof value === "string") return value;
+  if (!value || typeof value !== "object") return "";
+  return value[currentLanguage] || value.ru || value.en || value.et || "";
+}
+
+function createElement(tag, className, text) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (text) element.textContent = text;
+  return element;
+}
+
+function resolveAssetUrl(path) {
+  if (!path) return "";
+  if (/^(https?:|data:|blob:)/i.test(path)) return path;
+  return new URL(path.replace(/^\.?\//, "").replace(/^\/+/, ""), document.baseURI).href;
+}
+
+function safeExternalUrl(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(value, window.location.href);
+    return ["http:", "https:", "mailto:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function appendWorkImage(container, work) {
+  if (!work.image) return false;
+  const image = createElement("img", "work-image");
+  image.src = resolveAssetUrl(work.image);
+  image.alt = localized(work.imageAlt) || localized(work.title);
+  image.loading = "lazy";
+  image.addEventListener("error", () => {
+    image.remove();
+    container.classList.add("work-visual--missing");
+    container.append(createElement("span", "work-visual__title", localized(work.title)));
+  }, { once: true });
+  container.append(image);
+  container.classList.add("work-visual--image");
+  return true;
+}
+
+function createIllustrationCard(work, index) {
+  const card = createElement("article", "project-card");
+  const visual = createElement("div", `project-card__visual work-visual ${index % 2 ? "visual-note" : "visual-poster"}`);
+  if (!appendWorkImage(visual, work)) {
+    const placeholder = createElement("span", "work-visual__title", localized(work.title));
+    visual.append(placeholder);
+  }
+
+  const details = createElement("div", "project-card__details");
+  const heading = createElement("div");
+  const category = work.category === "graphic"
+    ? translations[currentLanguage].categoryGraphic
+    : translations[currentLanguage].categoryIllustration;
+  heading.append(
+    createElement("span", "card-index", `${category} ${String(index + 1).padStart(2, "0")}`),
+    createElement("h3", "", localized(work.title)),
+  );
+  const description = createElement("p", "", localized(work.description));
+  details.append(heading, description);
+  card.append(visual, details);
+  return card;
+}
+
+function createProjectRow(work, index) {
+  const row = createElement("article", "project-row");
+  const number = createElement("span", "card-index", String(index + 1).padStart(2, "0"));
+  const thumbnail = createElement("div", "project-row__thumbnail");
+  if (work.image) {
+    const image = createElement("img", "work-image");
+    image.src = resolveAssetUrl(work.image);
+    image.alt = localized(work.imageAlt) || localized(work.title);
+    image.loading = "lazy";
+    image.addEventListener("error", () => image.remove(), { once: true });
+    thumbnail.append(image);
+  } else {
+    thumbnail.textContent = "↗";
+    thumbnail.setAttribute("aria-hidden", "true");
+  }
+  const content = createElement("div");
+  const title = createElement("h3", "", localized(work.title));
+  const description = createElement("p", "", localized(work.description));
+  const link = safeExternalUrl(work.link);
+  if (link) {
+    const titleLink = createElement("a", "work-title-link");
+    titleLink.href = link;
+    titleLink.target = "_blank";
+    titleLink.rel = "noopener noreferrer";
+    titleLink.append(title);
+    content.append(titleLink);
+  } else {
+    content.append(title);
+  }
+  content.append(description);
+  const status = createElement("span", "project-row__type", localized(work.status));
+  row.append(number, thumbnail, content, status);
+  return row;
+}
+
+function createMediaCard(work, index) {
+  const card = createElement("article", `media-card${index === 0 ? " media-card--wide" : ""}`);
+  const visual = createElement("div", "media-card__visual");
+  if (!appendWorkImage(visual, work)) {
+    const placeholder = createElement("span", "media-card__placeholder", localized(work.title));
+    visual.append(placeholder);
+  }
+  const content = createElement("div", "media-card__content");
+  content.append(
+    createElement("span", "media-card__label", `${translations[currentLanguage].categoryMedia} ${String(index + 1).padStart(2, "0")}`),
+    createElement("h3", "", localized(work.title)),
+    createElement("p", "", localized(work.description)),
+  );
+  const link = safeExternalUrl(work.link);
+  if (link) {
+    const anchor = createElement("a", "media-card__link", translations[currentLanguage].openWork);
+    anchor.href = link;
+    anchor.target = "_blank";
+    anchor.rel = "noopener noreferrer";
+    content.append(anchor);
+  }
+  card.append(visual, content);
+  return card;
+}
+
+function renderPortfolioContent() {
+  if (!portfolioContent) return;
+
+  const works = portfolioContent.works.filter((work) => work && work.hidden !== true);
+  const visualWorks = works.filter((work) => ["illustration", "graphic"].includes(work.category));
+  const projects = works.filter((work) => work.category === "project");
+  const media = works.filter((work) => work.category === "media");
+  const lists = [
+    ["#illustration-work-list", visualWorks, "emptyIllustrations", createIllustrationCard],
+    ["#project-list", projects, "emptyProjects", createProjectRow],
+    ["#media-list", media, "emptyMedia", createMediaCard],
+  ];
+
+  lists.forEach(([selector, entries, emptyKey, createCard]) => {
+    const container = document.querySelector(selector);
+    if (!container) return;
+    container.replaceChildren();
+    if (!entries.length) {
+      container.append(createElement("p", "content-message", translations[currentLanguage][emptyKey]));
+      return;
+    }
+    entries.forEach((entry, index) => container.append(createCard(entry, index)));
+  });
+
+  const lead = document.querySelector("#about-lead");
+  const description = document.querySelector("#about-description");
+  const traits = document.querySelector("#about-traits");
+  if (lead) lead.textContent = localized(portfolioContent.about.lead);
+  if (description) description.textContent = localized(portfolioContent.about.description);
+  if (traits) {
+    traits.replaceChildren();
+    (portfolioContent.about.traits || []).forEach((trait) => {
+      const text = localized(trait);
+      if (text) traits.append(createElement("span", "", text));
+    });
+  }
+}
+
+function renderGameContent() {
+  if (!gameContent) return;
+  const fields = [
+    ["#game-eyebrow", gameContent.eyebrow],
+    ["#game-title", gameContent.title],
+    ["#game-description", gameContent.description],
+    ["#game-status", gameContent.status],
+  ];
+  fields.forEach(([selector, value]) => {
+    const element = document.querySelector(selector);
+    if (element) element.textContent = localized(value);
+  });
+}
+
+async function loadPortfolioContent() {
+  try {
+    const [worksResponse, aboutResponse] = await Promise.all([
+      fetch("content/works.json"),
+      fetch("content/about.json"),
+    ]);
+    if (!worksResponse.ok || !aboutResponse.ok) {
+      throw new Error(`Content request failed: works=${worksResponse.status}, about=${aboutResponse.status}`);
+    }
+
+    const [works, about] = await Promise.all([worksResponse.json(), aboutResponse.json()]);
+    if (!Array.isArray(works) || !about || typeof about !== "object") {
+      throw new TypeError("Portfolio content has an unexpected format");
+    }
+
+    portfolioContent = { works, about };
+    renderPortfolioContent();
+  } catch (error) {
+    console.error("Could not load portfolio content.", error);
+    document.querySelectorAll("#illustration-work-list, #project-list, #media-list").forEach((container) => {
+      container.replaceChildren(createElement("p", "content-message content-message--error", translations[currentLanguage].contentLoadError));
+    });
+  }
+}
+
+async function loadGameContent() {
+  try {
+    const response = await fetch("content/game.json");
+    if (!response.ok) throw new Error(`Game content request failed: ${response.status}`);
+    gameContent = await response.json();
+    if (!gameContent || typeof gameContent !== "object") {
+      throw new TypeError("Game content has an unexpected format");
+    }
+    renderGameContent();
+  } catch (error) {
+    console.error("Could not load mini-game page content.", error);
+    const description = document.querySelector("#game-description");
+    if (description) description.textContent = translations[currentLanguage].contentLoadError;
+  }
+}
 
 function setLanguage(language) {
   const translationsForLanguage = translations[language] ?? translations.ru;
+  currentLanguage = translations[language] ? language : "ru";
 
   document.documentElement.lang = language;
   document.querySelectorAll("[data-i18n]").forEach((element) => {
@@ -272,6 +521,8 @@ function setLanguage(language) {
   });
 
   localStorage.setItem("portfolio-language", language);
+  renderPortfolioContent();
+  renderGameContent();
 }
 
 languageButtons.forEach((button) => {
@@ -280,6 +531,8 @@ languageButtons.forEach((button) => {
 
 const savedLanguage = localStorage.getItem("portfolio-language");
 setLanguage(savedLanguage && translations[savedLanguage] ? savedLanguage : "ru");
+if (document.querySelector("#illustration-work-list")) loadPortfolioContent();
+if (document.querySelector("#game-title")) loadGameContent();
 
 function dockNavigation() {
   header?.classList.add("is-docked");
