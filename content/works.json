@@ -1,1 +1,17 @@
-[]
+[
+  {
+    "category": "graphic",
+    "title": {
+      "ru": "плакат для вымышленного кафе ",
+      "en": "Poster for a fictional café",
+      "et": "Plakat väljamõeldud kohviku jaoks"
+    },
+    "description": {
+      "ru": "Ночной еж",
+      "en": "night",
+      "et": "oosiil"
+    },
+    "image": "/media/imgp2244po.jpeg",
+    "hidden": false
+  }
+]
