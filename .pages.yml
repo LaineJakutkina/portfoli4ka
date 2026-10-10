@@ -1,0 +1,120 @@
+media:
+  - name: images
+    label: Изображения
+    input: media
+    output: /media
+    rename: safe
+    categories:
+      - image
+
+components:
+  localizedText:
+    type: object
+    label: Текст на трёх языках
+    fields:
+      - name: ru
+        label: Русский
+        type: text
+      - name: en
+        label: English
+        type: text
+      - name: et
+        label: Eesti
+        type: text
+
+content:
+  - name: works
+    label: Работы
+    type: file
+    path: content/works.json
+    format: json
+    list: true
+    fields:
+      - name: category
+        label: Раздел
+        type: select
+        required: true
+        options:
+          values:
+            - name: illustration
+              label: Иллюстрация
+            - name: graphic
+              label: Графика
+            - name: project
+              label: Проект
+            - name: media
+              label: Медиа
+      - name: title
+        label: Название
+        component: localizedText
+        required: true
+      - name: description
+        label: Описание
+        component: localizedText
+      - name: image
+        label: Изображение или обложка
+        type: image
+        options:
+          media: images
+      - name: imageAlt
+        label: Описание изображения для доступности
+        component: localizedText
+      - name: status
+        label: Статус (для проектов)
+        component: localizedText
+      - name: link
+        label: Ссылка (необязательно)
+        type: string
+      - name: hidden
+        label: Скрыть с сайта
+        type: boolean
+
+  - name: about
+    label: Обо мне
+    type: file
+    path: content/about.json
+    format: json
+    fields:
+      - name: lead
+        label: Короткое представление
+        component: localizedText
+        required: true
+      - name: description
+        label: Описание
+        component: localizedText
+      - name: traits
+        label: Принципы и факты обо мне
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{ru}"
+        fields:
+          - name: ru
+            label: Русский
+            type: string
+          - name: en
+            label: English
+            type: string
+          - name: et
+            label: Eesti
+            type: string
+
+  - name: game
+    label: Страница мини-игры
+    type: file
+    path: content/game.json
+    format: json
+    fields:
+      - name: eyebrow
+        label: Подзаголовок
+        component: localizedText
+      - name: title
+        label: Заголовок
+        component: localizedText
+      - name: description
+        label: Описание
+        component: localizedText
+      - name: status
+        label: Подпись статуса
+        component: localizedText
